@@ -1,5 +1,5 @@
 {
-  "name": "model-generator",
+  "name": "model-csv-generator",
   "version": "0.0.3",
   "description": "an pg-promise generator of fake data",
   "main": "index.js",
