@@ -1,9 +1,9 @@
 {
   "name": "model-generator",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "an pg-promise generator of fake data",
   "main": "index.js",
-  "author": "Jason Seminara <js@ga.co>",
+  "author": "Jason Seminara <jseminara@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "minimist": "^1.2.0",
