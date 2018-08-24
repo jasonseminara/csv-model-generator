@@ -1,5 +1,5 @@
 {
-  "name": "model-csv-generator",
+  "name": "csv-model-generator",
   "version": "0.0.5",
   "description": "an pg-promise generator of fake data using faker",
   "author": "Jason Seminara <jseminara@gmail.com>",
@@ -17,5 +17,7 @@
   },
   "scripts": {
     "db:generate:user": "mkdir data &>/dev/null; generate -m example_models/User --count=20 > data/demo_users.csv"
-  }
+  },
+  "main": "index.js",
+  "repository": "git@git.generalassemb.ly:jasonseminara/csv-model-generator.git"
 }
