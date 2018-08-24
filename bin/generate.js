@@ -7,13 +7,11 @@
  * @since 2018-08-23
  * @example ./generate -m models/tag --count=20 > demo_tags.csv
  */
-
-
+const path = require('path');
 const args = require('minimist')(process.argv.slice(2));
 const { m, count } = args;
 
-const model = require(m).fake();
-
+const model = require(path.join('..', m)).fake();
 
 const modelGenerator = (model) => {
   // loop over the keys to build out the heading

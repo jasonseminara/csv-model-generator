@@ -5,12 +5,18 @@
   "main": "index.js",
   "author": "Jason Seminara <js@ga.co>",
   "license": "MIT",
-  "private": false,
   "dependencies": {
-    "minimalist": "^1.0.0",
+    "minimist": "^1.2.0",
+    "nodemon": "^1.18.3",
     "pg-promise": "^8.4.6"
   },
   "bin": {
-    "generator": "./bin/generator"
+    "generate": "./bin/generate.js"
+  },
+  "devDependencies": {
+    "faker": "^4.1.0"
+  },
+  "scripts": {
+    "db:generate": "generate -m example_models/User --count=20"
   }
 }
