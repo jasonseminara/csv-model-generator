@@ -11,7 +11,7 @@ const path = require('path');
 const args = require('minimist')(process.argv.slice(2));
 const { m, count } = args;
 
-const model = require(path.join('..', m)).fake();
+const model = require(path.resolve(m)).fake();
 
 const modelGenerator = (model) => {
   // loop over the keys to build out the heading
