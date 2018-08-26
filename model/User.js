@@ -12,13 +12,9 @@
  * Each function returns a promise
  */
 
-const faker = require('faker');
-const util = require('util');
 const bcrypt = require('bcryptjs');
+const faker  = require('faker');
 const { db, helpers } = require('../config/dbConnection');
-
-// sine we're using promises throughout, let's be consistent
-const hash = util.promisify(bcrypt.hash);
 
 const cs = new helpers.ColumnSet([
   'username',
@@ -61,24 +57,30 @@ module.exports = class User {
   /**
    * @method insertBatch
    * @param {user[]} an array of users to insert using a transaction
+   * @return {user[]} an array of successfully inserted users
    */
-  static async insertBatch(users) {
+  static async insert(users = []) {
     try {
       // first lets hash all the passwords
-      // we wrap each user in a promise and wait for the bcrypt to resolve
+      // wrap each user in a promise and wait for the bcrypt to resolve
       // before returning all the promises
       const hashedUsers = Promise.all(users.map(async user => ({
         ...user,
         password: await bcrypt.hash(user.password, 10),
       })));
 
-      return db.tx(async (t) => {
-        const insert = helpers.insert(await hashedUsers, cs);
-        return await t.many(`${insert} RETURNING *`);
-      }).catch(console.error);
 
+      // set up a transaction to record all the new users
+      return db.tx(async (t) => {
+        // use helpers.insert to generate the SQL insert stmt
+        const insert = helpers.insert(await hashedUsers, cs);
+        // insert records
+        return t.many(`${insert} RETURNING *`);
+      })
+        .catch(console.error);
     } catch (e) {
       console.error(e);
+      return false;
     }
   }
 };

@@ -1,4 +1,4 @@
-#!/usr/bin/env node --inspect-brk
+#!/usr/bin/env node
 const model = require('../model/User');
 
 const stdin = process.openStdin();
@@ -26,7 +26,6 @@ stdin.on('end', () => {
 
   model.insertBatch(lines.map(r => zip(keys, r.split(','))))
     .then((results) => {
-      debugger;
       console.log(results);
     })
     .catch(console.err);
