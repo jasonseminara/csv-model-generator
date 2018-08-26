@@ -4,20 +4,41 @@
   "description": "an pg-promise generator of fake data using faker",
   "author": "Jason Seminara <jseminara@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "minimist": "^1.2.0",
-    "nodemon": "^1.18.3",
-    "pg-promise": "^8.4.6"
-  },
+  "main": "index.js",
+  "repository": "git@git.generalassemb.ly:jasonseminara/csv-model-generator.git",
+  "keywords": [
+    "generator",
+    "pg-promise",
+    "psql",
+    "node",
+    "csv"
+  ],
   "bin": {
     "generate": "./bin/generate.js"
   },
+  "config": {
+    "dbname": {
+      "dev": "dummy_dev",
+      "test": "todo_test"
+    }
+  },
   "devDependencies": {
-    "faker": "^4.1.0"
+    "bcryptjs": "^2.4.3",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "faker": "^4.1.0",
+    "nodemon": "^1.18.3",
+    "pg-promise": "^8.4.6"
+  },
+  "dependencies": {
+    "minimist": "^1.2.0"
   },
   "scripts": {
-    "db:generate:user": "mkdir data &>/dev/null; generate -m example_models/User --count=20 > data/demo_users.csv"
-  },
-  "main": "index.js",
-  "repository": "git@git.generalassemb.ly:jasonseminara/csv-model-generator.git"
+    "db:init:dev": "createdb $npm_package_config_dbname_dev",
+    "db:init:test": "createdb $npm_package_config_dbname_test",
+    "db:create:dev": "psql -d $npm_package_config_dbname_dev -f db/schema.sql",
+    "db:create:test": "psql -d $npm_package_config_dbname_test -f db/schema.sql",
+    "db:generate:user": "mkdir data &>/dev/null; ./bin/generate.js -m model/User --count=20 > data/demo_users.csv"
+  }
 }
