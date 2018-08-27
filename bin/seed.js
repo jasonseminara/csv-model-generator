@@ -1,5 +1,11 @@
 #!/usr/bin/env node
-const model = require('../model/User');
+const path = require('path');
+
+const args  = require('minimist')(process.argv.slice(2));
+
+const model = args.m || args.model;
+
+const { insertBatch } = require(path.resolve(model));
 
 const stdin = process.openStdin();
 let data = '';
@@ -24,7 +30,7 @@ stdin.on('end', () => {
   const [head, ...lines] = data.trim().split('\n');
   const keys = head.split(',');
 
-  model.insertBatch(lines.map(r => zip(keys, r.split(','))))
+  insertBatch(lines.map(r => zip(keys, r.split(','))))
     .then((results) => {
       console.log(results);
     })

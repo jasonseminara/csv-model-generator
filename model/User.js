@@ -16,6 +16,8 @@ const bcrypt = require('bcryptjs');
 const faker  = require('faker');
 const { db, helpers } = require('../config/dbConnection');
 
+
+// describe the database fields so the helper can generate SQL for us
 const cs = new helpers.ColumnSet([
   'username',
   'password',
@@ -29,12 +31,6 @@ const cs = new helpers.ColumnSet([
 
 
 module.exports = class User {
-  static findAll() {}
-
-  static findOne(filter) {}
-
-  static destroy(id) {}
-
   /**
    * @method fake
    * @returns {object} with:
@@ -59,7 +55,7 @@ module.exports = class User {
    * @param {user[]} an array of users to insert using a transaction
    * @return {user[]} an array of successfully inserted users
    */
-  static async insert(users = []) {
+  static async insertBatch(users = []) {
     try {
       // first lets hash all the passwords
       // wrap each user in a promise and wait for the bcrypt to resolve
