@@ -1,10 +1,16 @@
 {
   "name": "csv-model-generator",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "a pg-promise generator of fake data using faker",
   "author": "Jason Seminara <jseminara@gmail.com>",
   "license": "MIT",
-  "repository": "git@git.generalassemb.ly:jasonseminara/csv-model-generator.git",
+  "repository": {
+    "type": "git",
+    "url": "git@git.generalassemb.ly:jasonseminara/csv-model-generator.git"
+  },
+  "engines": {
+    "node": ">=9"
+  },
   "keywords": [
     "generator",
     "pg-promise",
