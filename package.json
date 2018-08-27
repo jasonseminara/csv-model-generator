@@ -19,7 +19,7 @@
   "config": {
     "dbname": {
       "dev": "dummy_dev",
-      "test": "todo_test"
+      "test": "dummy_test"
     }
   },
   "devDependencies": {
@@ -39,6 +39,7 @@
     "db:create:dev": "psql -d $npm_package_config_dbname_dev -f db/schema.sql",
     "db:create:test": "psql -d $npm_package_config_dbname_test -f db/schema.sql",
     "model:generate:user": "./bin/generate.js -m model/User.fake -c 20 --out > data/demo_users.csv",
-    "db:seed:user": "cat ./data/demo_users.csv | ./bin/generate.js -m model/User.insertBatch"
+    "db:seed:user": "cat ./data/demo_users.csv | ./bin/generate.js -m model/User.register",
+    "db:all": "yarn model:generate:user && yarn db:create:dev && yarn db:seed:user"
   }
 }

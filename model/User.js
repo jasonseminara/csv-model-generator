@@ -20,7 +20,7 @@ const { db, helpers } = require('../config/dbConnection');
 // describe the database fields so the helper can generate SQL for us
 const cs = new helpers.ColumnSet([
   'username',
-  'password',
+  'password_digest',
   'email',
   'firstname',
   'lastname',
@@ -55,14 +55,24 @@ module.exports = class User {
    * @param {user[]} an array of users to insert using a transaction
    * @return {user[]} an array of successfully inserted users
    */
-  static async insertBatch(users = []) {
+  static async register(userList=[]) {
+    // users are either going to be one or a collection, always make it many
+    const users = userList.map ? userList : [userList];
+
     try {
-      // first lets hash all the passwords
-      // wrap each user in a promise and wait for the bcrypt to resolve
-      // before returning all the promises
-      const hashedUsers = Promise.all(users.map(async user => ({
+      /**
+       * first lets hash all the passwords
+       * wrap each user in a promise and wait for the bcrypt to resolve
+       * before returning all the promises
+       * note here, that we're destructuring the password from the user
+       * for two reasons:
+       * 1. we'll be replacing the field with password_digest
+       * 2. we NEVER want the cleartext password to go to the DB and
+       *   get recorded in the log
+       */
+      const hashedUsers = Promise.all(users.map(async ({ password, ...user }) => ({
         ...user,
-        password: await bcrypt.hash(user.password, 10),
+        password_digest: await bcrypt.hash(password, 10),
       })));
 
 

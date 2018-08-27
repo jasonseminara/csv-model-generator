@@ -19,14 +19,14 @@ function modelGenerator(m) {
   // loop over the keys to build out the heading
   const header = Object.keys(m).join(',');
 
-  // loop over the values
-  const body = Array(count).fill(0)
-    /* map over, execute the array of fns and join the results */
-    .map(() => Object.values(m).map(f => f()).join(','));
+  console.log(header);
 
-  // join the header and the body
-  // spit out the results with line breaks separating the records
-  return [header, ...body].join('\n');
+  // loop over the values
+  Array(count).fill(0)
+    /* map over, execute the array of fns and join the results */
+    .forEach(() => {
+      console.log(Object.values(m).map(f => f()).join(','));
+    });
 }
 
 /**
@@ -44,29 +44,24 @@ function zip(keys, vals) {
 
 // if we're outputting a CSV stream
 if (args.out) {
-  console.log(modelGenerator(model[method]()));
-  process.exit();
+  modelGenerator(model[method]());
+} else {
+  // if we're receiving a CSV data stream
+  const stdin = process.openStdin();
+  let data = '';
+
+  stdin.on('data', (chunk) => { data += chunk; });
+
+  stdin.on('end', () => {
+    // we'll grab the head row and the rest of the data
+    const [head, ...lines] = data.trim().split('\n');
+    const keys = head.split(',');
+
+    model[method](lines.map(r => zip(keys, r.split(','))))
+      .then((results) => {
+        console.log(results);
+      })
+      .catch(console.err);
+  });
 }
-
-
-// if we're receiving a CSV data stream
-const stdin = process.openStdin();
-let data = '';
-
-stdin.on('data', (chunk) => { data += chunk; });
-
-stdin.on('end', () => {
-  // we'll grab the head row and the rest of the data
-  const [head, ...lines] = data.trim().split('\n');
-  const keys = head.split(',');
-
-  model[method](lines.map(r => zip(keys, r.split(','))))
-    .then((results) => {
-      console.log(results);
-    })
-    .catch(console.err);
-});
-
-
-
 
