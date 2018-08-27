@@ -14,8 +14,7 @@
     "csv"
   ],
   "bin": {
-    "csv-generate": "./bin/generate.js",
-    "csv-db-seed": "./bin/seed.js"
+    "model-csv": "./bin/generate.js"
   },
   "config": {
     "dbname": {
@@ -39,7 +38,7 @@
     "db:init:test": "createdb $npm_package_config_dbname_test",
     "db:create:dev": "psql -d $npm_package_config_dbname_dev -f db/schema.sql",
     "db:create:test": "psql -d $npm_package_config_dbname_test -f db/schema.sql",
-    "model:generate:user": "mkdir data &>/dev/null; ./bin/generate.js -m model/User --count=20 > data/demo_users.csv",
-    "db:seed:user": "cat ./data/demo_users.csv | ./bin/seed.js -m model/User"
+    "model:generate:user": "./bin/generate.js -m model/User.fake -c 20 --out > data/demo_users.csv",
+    "db:seed:user": "cat ./data/demo_users.csv | ./bin/generate.js -m model/User.insertBatch"
   }
 }
