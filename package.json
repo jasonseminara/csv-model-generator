@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@git.generalassemb.ly:jasonseminara/csv-model-generator.git"
+    "url": "git+https://github.com/jasonseminara/csv-model-generator.git"
   },
   "engines": {
     "node": ">=9"
@@ -46,5 +46,9 @@
     "model:generate:user": "./bin/generate.js -m model/User.fake -c 20 --out > data/demo_users.csv",
     "db:seed:user": "cat ./data/demo_users.csv | ./bin/generate.js -m model/User.register",
     "db:all": "yarn model:generate:user && yarn db:create:dev && yarn db:seed:user"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/jasonseminara/csv-model-generator/issues"
+  },
+  "homepage": "https://github.com/jasonseminara/csv-model-generator#readme"
 }
